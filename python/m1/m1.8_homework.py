@@ -58,10 +58,8 @@ from models import model
 
 @tool
 def send_sms_tool(recipient: str) -> str:
-    """send a text message to the 'recipient' in the function argument
-    return the text message body to the user"""
-
-    return f"Hello {recipient}!  I hope you are having a good day!"
+    """send a text message to the 'recipient' in the function argument"""
+    return f"Text message has been sent to {recipient}"
 
 
 # ════════════════════════════════════════════════════════════════════════
@@ -81,19 +79,19 @@ def send_sms_tool(recipient: str) -> str:
 SYSTEM_PROMPT = "TODO 2: replace this with your own system prompt."
 INITIAL_REQUEST = "TODO 2: replace this with a request that would trigger your tool."
 INTERRUPT_ON: dict[str, bool | InterruptOnConfig] = {
-    "your_action_tool": True
+    "send_sms_tool": True
 }  # TODO 2: replace with your own allowed_decisions config
 
 # Guards against running with an unfilled placeholder; the filled
 # reference doesn't need this since there's no placeholder text left.
-if "TODO 1" in your_action_tool.description:
+if "TODO 1" in send_sms_tool.description:
     raise NotImplementedError("TODO 1: see the comment block above")
 if "TODO 2" in SYSTEM_PROMPT or "TODO 2" in INITIAL_REQUEST:
     raise NotImplementedError("TODO 2: see the comment block above")
 
 agent = create_deep_agent(
     model=model,
-    tools=[your_action_tool],
+    tools=[send_sms_tool],
     system_prompt=SYSTEM_PROMPT,
     interrupt_on=INTERRUPT_ON,
     checkpointer=MemorySaver(),
@@ -139,6 +137,6 @@ while result.interrupts:
     )
 
 for msg in result.value["messages"]:
-    if hasattr(msg, "name") and msg.name == "your_action_tool":
+    if hasattr(msg, "name") and msg.name == "send_sms_tool":
         print(msg.text)
         break
