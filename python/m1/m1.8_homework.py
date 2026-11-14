@@ -76,8 +76,16 @@ def send_sms_tool(recipient: str) -> str:
 #     want to call it.
 # ════════════════════════════════════════════════════════════════════════
 
-SYSTEM_PROMPT = "TODO 2: replace this with your own system prompt."
-INITIAL_REQUEST = "TODO 2: replace this with a request that would trigger your tool."
+SYSTEM_PROMPT = """You are a helpful personal assistant.
+Rules:
+- if your user asks you to send a message, send a text, or message someone, use send_sms_tool
+- the recipient argument for send_sms_tool is the person your user asked you to send a message to
+- make your text messages friendly sounding
+- do not claim that a message has been sent until the tool result confirms that it was sent
+"""
+INITIAL_REQUEST = (
+    "Send a text to Catherine saying that I will be home slightly early tonight"
+)
 INTERRUPT_ON: dict[str, bool | InterruptOnConfig] = {
     "send_sms_tool": True
 }  # TODO 2: replace with your own allowed_decisions config
